@@ -44,7 +44,7 @@ export class PdfStandardSummaryComponent implements OnChanges {
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['pdfDocuments']) {
+    if (changes['pdfDocuments'] && this.pdfDocuments) {
       this.documentCount = this.pdfDocuments.length;
       this.cdr.detectChanges();
       this.createChart();
@@ -100,19 +100,14 @@ export class PdfStandardSummaryComponent implements OnChanges {
               beginAtZero: true,
               max: documentCount,
               ticks: {
-                stepSize: 1,
-                callback: function (value) {
-                  if (Number.isInteger(value)) {
-                    return value;
-                  }
-                  return null;
-                }
+                precision: 0,
+                stepSize: 1
               }
             },
             x: {
               beginAtZero: true,
               ticks: {
-                precision: 0,
+                precision: 0
               }
             }
           }
