@@ -4,13 +4,9 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatListModule } from '@angular/material/list';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatTableModule } from '@angular/material/table';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { PdfPropertiesService } from '../../services/pdf-properties.service';
 import { PdfDocument } from '../../models/pdf-document.model';
 import { SecuritySummaryComponent } from './security-summary/security-summary.component';
@@ -30,13 +26,9 @@ import { ngxCsv } from 'ngx-csv/ngx-csv';
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatListModule,
-    MatToolbarModule,
     MatSnackBarModule,
     MatIconModule,
     MatFormFieldModule,
-    MatTableModule,
-    MatExpansionModule,
     SecuritySummaryComponent,
     AccessibilitySummaryComponent,
     PdfStandardSummaryComponent
@@ -50,6 +42,7 @@ export class PdfSecurityCheckerComponent implements OnInit {
   loading = false;
   errorMessage = '';
   documentCount = 0;
+  totalResults = 0; // 追加
 
   constructor(private pdfPropertiesService: PdfPropertiesService, private dateFormatService: DateFormatService, private cdr: ChangeDetectorRef) { }
 
@@ -62,7 +55,8 @@ export class PdfSecurityCheckerComponent implements OnInit {
 
     try {
       const response = await this.pdfPropertiesService.checkProperties(this.domain, this.limit);
-      this.pdfDocuments = response.map((item: any) => {
+      this.totalResults = response.totalResults; // 追加
+      this.pdfDocuments = response.documents.map((item: any) => {
         const pdfProperties = JSON.parse(item.pdfProperties);
         return {
           ...item,
@@ -116,20 +110,20 @@ export class PdfSecurityCheckerComponent implements OnInit {
       'PDF/UA Compliance Level': doc.pdfProperties.document.pdfua_compliance_level ?? '',
       'PDF/VT Compliance Level': doc.pdfProperties.document.pdfvt_compliance_level ?? '',
       'PDF/X Compliance Level': doc.pdfProperties.document.pdfx_compliance_level ?? '',
-      'Encryption Attachments Only': doc.pdfProperties.security_info.encryption?.encrypt_attachments_only,
-      'Has Owner Password': doc.pdfProperties.security_info.encryption?.has_owner_password,
-      'Encrypt Metadata': doc.pdfProperties.security_info.encryption?.encrypt_metadata,
-      'Has User Password': doc.pdfProperties.security_info.encryption?.has_user_password,
-      'Encryption Bit Length': doc.pdfProperties.security_info.encryption?.bit_length,
-      'Encryption Algorithm': doc.pdfProperties.security_info.encryption?.algorithm,
-      'Assistive Technology': doc.pdfProperties.security_info.permissions?.assistive_technology,
-      'Form Filling': doc.pdfProperties.security_info.permissions?.form_filling,
-      'Copying': doc.pdfProperties.security_info.permissions?.copying,
-      'Page Extraction': doc.pdfProperties.security_info.permissions?.page_extraction,
-      'Document Assembly': doc.pdfProperties.security_info.permissions?.document_assembly,
-      'Commenting': doc.pdfProperties.security_info.permissions?.commenting,
-      'Printing': doc.pdfProperties.security_info.permissions?.printing,
-      'Editing': doc.pdfProperties.security_info.permissions?.editing,
+      'Encryption Attachments Only': doc.pdfProperties.security_info?.encryption?.encrypt_attachments_only,
+      'Has Owner Password': doc.pdfProperties.security_info?.encryption?.has_owner_password,
+      'Encrypt Metadata': doc.pdfProperties.security_info?.encryption?.encrypt_metadata,
+      'Has User Password': doc.pdfProperties.security_info?.encryption?.has_user_password,
+      'Encryption Bit Length': doc.pdfProperties.security_info?.encryption?.bit_length,
+      'Encryption Algorithm': doc.pdfProperties.security_info?.encryption?.algorithm,
+      'Assistive Technology': doc.pdfProperties.security_info?.permissions?.assistive_technology,
+      'Form Filling': doc.pdfProperties.security_info?.permissions?.form_filling,
+      'Copying': doc.pdfProperties.security_info?.permissions?.copying,
+      'Page Extraction': doc.pdfProperties.security_info?.permissions?.page_extraction,
+      'Document Assembly': doc.pdfProperties.security_info?.permissions?.document_assembly,
+      'Commenting': doc.pdfProperties.security_info?.permissions?.commenting,
+      'Printing': doc.pdfProperties.security_info?.permissions?.printing,
+      'Editing': doc.pdfProperties.security_info?.permissions?.editing,
       'Number of Images': doc.pdfProperties.pages.map(page => page.content.number_of_images).reduce((a, b) => a + b, 0),
       'Only Images': doc.pdfProperties.pages.some(page => page.content.only_images),
       'Has Text': doc.pdfProperties.pages.some(page => page.content.has_text),

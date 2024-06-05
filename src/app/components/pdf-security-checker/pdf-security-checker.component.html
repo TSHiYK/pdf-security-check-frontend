@@ -1,5 +1,5 @@
 <div class="tool-overview">
-   <ul>
+  <ul>
     <li>このツールは、指定したドメイン上で公開されているPDFファイルを取得し、セキュリティとアクセシビリティの状態をチェックしてレポートを作成します。</li>
     <li>現在β版のため、一度に分析できるファイル数の上限は10件です。</li>
     <li>使用API: PDF Services API, Google Custom Search API</li>
@@ -8,7 +8,7 @@
 
 <form (ngSubmit)="checkProperties()" class="form">
   <div class="form-row">
-     <mat-form-field appearance="fill" class="form-field">
+    <mat-form-field appearance="fill" class="form-field">
       <mat-label>ドメイン</mat-label>
       <input matInput [(ngModel)]="domain" name="domain" required placeholder="adobe.com">
     </mat-form-field>
@@ -18,7 +18,7 @@
     </mat-form-field>
     <button mat-raised-button color="primary" type="submit" [disabled]="loading || !domain" class="form-button">分析</button>
     <ng-container *ngIf="pdfDocuments.length > 0">
-        <button  mat-raised-button color="primary" type="button" (click)="downloadCSV()" style="margin-left: 10px">CSVダウンロード</button>
+      <button mat-raised-button color="primary" type="button" (click)="downloadCSV()" style="margin-left: 10px">CSVダウンロード</button>
     </ng-container>
   </div>
 </form>
@@ -34,6 +34,10 @@
 </div>
 
 <div *ngIf="pdfDocuments.length > 0" class="result">
+  <p>検索結果: {{ totalResults }} 件ヒットしました。以下の {{ pdfDocuments.length }} 件のファイルを分析しています。</p>
+  <ul>
+    <li *ngFor="let doc of pdfDocuments"><a [href]="doc.pdfUrl" target="_blank">{{doc.fileName}}</a></li>
+  </ul>
   <app-security-summary [pdfDocuments]="pdfDocuments"></app-security-summary>
   <app-accessibility-summary [pdfDocuments]="pdfDocuments"></app-accessibility-summary>
   <app-pdf-standard-summary [pdfDocuments]="pdfDocuments"></app-pdf-standard-summary>
