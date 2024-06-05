@@ -1,0 +1,7 @@
+<div class="server-log-container" #serverLogContainer>
+  <div class="server-logs">
+    <div *ngFor="let log of logs">
+      <p>{{ log.timestamp }} - {{ log.level }}: {{ log.message }}</p>
+    </div>
+  </div>
+</div>

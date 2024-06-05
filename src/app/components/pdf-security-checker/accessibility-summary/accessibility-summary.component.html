@@ -1,0 +1,45 @@
+<section>
+  <h1>Accessibility</h1>
+  <div *ngIf="documentCount > 0" class="charts-container">
+    <div class="chart">
+      <h3>タグ付き</h3>
+      <p>PDFがタグ付けされていると、スクリーンリーダーで読みやすくなります。</p>
+      <canvas id="taggedChart"></canvas>
+    </div>
+    <div class="chart">
+      <h3>テキストの有無</h3>
+      <p>テキストが含まれているPDFは、検索や選択が可能で情報の抽出が容易です。</p>
+      <canvas id="textChart"></canvas>
+    </div>
+    <div class="chart">
+      <h3>画像の有無</h3>
+      <p>画像が含まれているPDFは、視覚的な情報を提供し内容の理解を助けます。</p>
+      <canvas id="imagesChart"></canvas>
+    </div>
+    <div class="chart">
+      <h3>フォームフィールド</h3>
+      <p>フォームフィールドが含まれているPDFは、情報入力が可能なインタラクティブ文書です。</p>
+      <canvas id="formFieldsChart"></canvas>
+    </div>
+    <div class="chart">
+      <h3>構造化</h3>
+      <p>構造化されたPDFは、目次やブックマークのナビゲーション機能を持ちます。</p>
+      <canvas id="outlineChart"></canvas>
+    </div>
+    <div class="chart">
+      <h3>スキャンされたページ</h3>
+      <p>スキャンされたページが含まれているPDFは、OCR機能でテキスト化できます。</p>
+      <canvas id="scannedPagesChart"></canvas>
+    </div>
+    <div class="chart">
+      <h3>PDF/UA準拠</h3>
+      <p>PDF/UAに準拠したPDFは、アクセシビリティに対応しています。</p>
+      <canvas id="pdfUaChart"></canvas>
+    </div>
+    <div class="chart">
+      <h3>Web表示用に最適化</h3>
+      <p>リニアライズされたPDFは、Web表示用に最適化されています。</p>
+      <canvas id="linearizedChart"></canvas>
+    </div>
+  </div>
+</section>

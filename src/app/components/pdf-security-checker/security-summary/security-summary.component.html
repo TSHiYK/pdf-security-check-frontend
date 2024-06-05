@@ -1,0 +1,30 @@
+<section>
+<h1>Security</h1>
+<div *ngIf="documentCount > 0" class="charts-container">
+  <div class="chart" *ngIf="documentCount > 0">
+    <h2>Encryption</h2>
+    <p>暗号化されたPDFは、コンテンツを不正アクセスから保護します。</p>
+    <canvas id="encryptedChart"></canvas>
+  </div>
+  <div class="chart" *ngIf="documentCount > 0">
+    <h2>Signed</h2>
+    <p>署名されたPDFは、文書の信頼性と完全性を保証します。</p>
+    <canvas id="signedChart"></canvas>
+  </div>
+  <div class="chart" *ngIf="documentCount > 0">
+    <h2>Certified</h2>
+    <p>認証済みPDFは、文書の出所と真正性を確認します。</p>
+    <canvas id="certifiedChart"></canvas>
+  </div>
+</div>
+
+<h2>セキュリティオプション</h2>
+<div *ngIf="documentCount > 0">
+  <canvas id="additionalSecurityChart"></canvas>
+</div>
+
+<h2>文書に関する制限の概要</h2>
+<div *ngIf="documentCount > 0">
+  <canvas id="documentRestrictionsChart"></canvas>
+</div>
+</section>

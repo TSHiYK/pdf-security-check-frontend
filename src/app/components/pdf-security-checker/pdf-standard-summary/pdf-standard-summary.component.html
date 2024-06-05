@@ -1,0 +1,10 @@
+<section class="standards-container">
+  <h1>PDF標準規格準拠</h1>
+  <canvas id="standardChart"></canvas>
+  <div class="standard-description">
+    <div *ngFor="let standard of standards">
+      <h4>{{ standard.title }}</h4>
+      <p>{{ standard.description }}</p>
+    </div>
+  </div>
+</section>

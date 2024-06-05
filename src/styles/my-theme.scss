@@ -1,0 +1,17 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+// Define custom color
+$primary: mat.define-palette(mat.$grey-palette, 900); // 黒色
+$accent: mat.define-palette(mat.$blue-palette, A200, A100, A400);
+
+// Create custom theme object
+$custom-theme: mat.define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+  ),
+));
+
+// Include Angular Material theme styles
+@include mat.all-component-themes($custom-theme);

@@ -1,0 +1,35 @@
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+    
+  .chart {
+    max-width: 300px;
+    flex: 1 1 25%; /* 1つのチャートが25%の幅を持つように設定 */
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    padding: 10px;
+
+    @media (max-width: 1200px) {
+      flex: 1 1 33.33%; /* 1200px以下の幅では3列に調整 */
+    }
+
+    @media (max-width: 900px) {
+      flex: 1 1 50%; /* 900px以下の幅では2列に調整 */
+    }
+
+    @media (max-width: 600px) {
+      flex: 1 1 100%; /* 600px以下の幅では1列に調整 */
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+  }
+    p {
+        margin: 0 0 1em;
+    }
+
+}

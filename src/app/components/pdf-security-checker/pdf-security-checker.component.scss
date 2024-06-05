@@ -1,0 +1,65 @@
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh; /* 全画面中央に表示する */
+}
+
+.error-message {
+  color: red;
+  margin-top: 16px;
+}
+
+.result {
+  margin-top: 32px;
+}
+
+.form-field {
+  margin-right: 16px;
+}
+
+.mat-elevation-z8 {
+  margin-bottom: 16px;
+}
+
+.chart-container h3 {
+  margin: 0.5em 0 0.2em;
+}
+.chart-container p {
+  margin: 0 0 1em;
+}
+
+.chart-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+
+  canvas {
+    width: 200px !important;
+    height: 200px !important;
+  }
+}
+
+.tool-overview {
+  background: #fafafa;
+  padding: 0 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  li {
+    color: #333;
+    font-size: 12px;
+  }
+}
