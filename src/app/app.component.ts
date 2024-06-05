@@ -35,5 +35,5 @@ import { ServerLogComponent } from './components/server-log/server-log.component
   ]
 })
 export class AppComponent {
-  title = 'PDF Security Checker';
+  title = 'PDF Checker（β版）';
 }
