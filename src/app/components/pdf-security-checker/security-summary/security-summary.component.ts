@@ -29,7 +29,6 @@ export class SecuritySummaryComponent implements OnChanges {
     if (documentCount === 0) {
       return;
     }
-
     // Basic Security Items
     const encryptedCount = this.pdfDocuments.filter(doc => doc.pdfProperties.document.is_encrypted).length;
     const signedCount = this.pdfDocuments.filter(doc => doc.pdfProperties.document.is_signed).length;
@@ -40,15 +39,15 @@ export class SecuritySummaryComponent implements OnChanges {
     this.createPieChart('certifiedChart', 'Certified', certifiedCount, documentCount);
 
     // Document Restrictions Summary
-    const printingCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.permissions.printing !== 'none').length;
-    const copyingCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.permissions.copying).length;
-    const modifyingCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.permissions.editing).length;
-    const annotationCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.permissions.commenting).length;
-    const formFillingCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.permissions.form_filling).length;
-    const accessibilityCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.permissions.assistive_technology).length;
-    const extractionCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.permissions.page_extraction).length;
-    const assemblyCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.permissions.document_assembly).length;
-    const templateCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.permissions.printing === 'high_resolution').length;
+    const printingCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.printing !== 'none').length;
+    const copyingCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.copying).length;
+    const modifyingCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.editing).length;
+    const annotationCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.commenting).length;
+    const formFillingCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.form_filling).length;
+    const accessibilityCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.assistive_technology).length;
+    const extractionCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.page_extraction).length;
+    const assemblyCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.document_assembly).length;
+    const templateCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.printing === 'high_resolution').length;
 
     this.createBarChart(
       'documentRestrictionsChart',
@@ -78,11 +77,11 @@ export class SecuritySummaryComponent implements OnChanges {
     );
 
     // Additional Security Items
-    const encryption128Count = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.encryption.bit_length === 128).length;
-    const encryption256Count = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.encryption.bit_length === 256).length;
-    const ownerPasswordCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.encryption.has_owner_password).length;
-    const userPasswordCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.encryption.has_user_password).length;
-    const metadataEncryptionCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info.encryption.encrypt_metadata).length;
+    const encryption128Count = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.encryption?.bit_length === 128).length;
+    const encryption256Count = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.encryption?.bit_length === 256).length;
+    const ownerPasswordCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.encryption?.has_owner_password).length;
+    const userPasswordCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.encryption?.has_user_password).length;
+    const metadataEncryptionCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.encryption?.encrypt_metadata).length;
 
     this.createBarChart(
       'additionalSecurityChart',
