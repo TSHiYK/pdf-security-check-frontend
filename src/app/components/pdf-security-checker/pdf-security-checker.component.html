@@ -1,28 +1,39 @@
 <div class="tool-overview">
   <ul>
-    <li>このツールは、指定したドメイン上で公開されているPDFファイルを取得し、セキュリティとアクセシビリティの状態をチェックしてレポートを作成します。</li>
+    <li>このツールは、PDFファイルのキュリティとアクセシビリティの状態をチェックしてレポートを作成します。</li>
     <li>現在β版のため、一度に分析できるファイル数の上限は10件です。</li>
     <li>使用API: PDF Services API, Google Custom Search API</li>
   </ul>
 </div>
 
-<form (ngSubmit)="checkProperties()" class="form">
-  <div class="form-row">
-    <mat-form-field appearance="fill" class="form-field">
-      <mat-label>ドメイン</mat-label>
-      <input matInput [(ngModel)]="domain" name="domain" required placeholder="adobe.com">
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="form-field">
-      <mat-label>ファイル数</mat-label>
-      <input matInput type="number" [(ngModel)]="limit" name="limit" min="1" max="10" required>
-    </mat-form-field>
-    <button mat-raised-button color="primary" type="submit" [disabled]="loading || !domain" class="form-button">分析</button>
-    <ng-container *ngIf="pdfDocuments.length > 0">
-      <button mat-raised-button color="primary" type="button" (click)="downloadCSV()" style="margin-left: 10px">CSVダウンロード</button>
-    </ng-container>
-  </div>
-</form>
-
+<ul>
+  <li>
+    <p>公開されているファイルを分析</p>
+    <form (ngSubmit)="checkProperties()" class="form">
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>ドメイン</mat-label>
+          <input matInput [(ngModel)]="domain" name="domain" required placeholder="adobe.com">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>ファイル数</mat-label>
+          <input matInput type="number" [(ngModel)]="limit" name="limit" min="1" max="10" required>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading || !domain" class="form-button">検索して分析</button>
+        
+      </div>
+    </form>
+  </li>
+  <li>
+    <p>ローカルファイルを分析</p>
+    <form (ngSubmit)="uploadFiles()" class="form">
+      <div class="form-row">
+        <input type="file" (change)="onFileSelected($event)" multiple>
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading || !selectedFiles.length" class="form-button">アップロードして分析</button>
+      </div>
+    </form>
+  </li>
+</ul>
 <div *ngIf="loading" class="spinner-container">
   <div class="spinner">
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
@@ -34,10 +45,13 @@
 </div>
 
 <div *ngIf="pdfDocuments.length > 0" class="result">
+  <!--
   <p>検索結果: {{ totalResults }} 件ヒットしました。以下の {{ pdfDocuments.length }} 件のファイルを分析しています。</p>
   <ul>
     <li *ngFor="let doc of pdfDocuments"><a [href]="doc.pdfUrl" target="_blank">{{doc.fileName}}</a></li>
   </ul>
+  -->
+  <button mat-raised-button color="primary" type="button" (click)="downloadCSV()" style="margin: 20px auto">分析結果をダウンロード</button>
   <app-security-summary [pdfDocuments]="pdfDocuments"></app-security-summary>
   <app-accessibility-summary [pdfDocuments]="pdfDocuments"></app-accessibility-summary>
   <app-pdf-standard-summary [pdfDocuments]="pdfDocuments"></app-pdf-standard-summary>

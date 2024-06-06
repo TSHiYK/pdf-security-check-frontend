@@ -9,4 +9,13 @@ export class PdfPropertiesService {
     const response = await axios.post('http://localhost:3000/api/check-pdf-properties', { domain, limit });
     return response.data;
   }
+
+  async uploadFiles(formData: FormData): Promise<any> {
+    const response = await axios.post('http://localhost:3000/api/upload-pdf-properties', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  }
 }

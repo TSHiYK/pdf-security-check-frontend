@@ -42,9 +42,14 @@ export class PdfSecurityCheckerComponent implements OnInit {
   loading = false;
   errorMessage = '';
   documentCount = 0;
-  totalResults = 0; // 追加
+  totalResults = 0;
+  selectedFiles: File[] = [];
 
-  constructor(private pdfPropertiesService: PdfPropertiesService, private dateFormatService: DateFormatService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private pdfPropertiesService: PdfPropertiesService,
+    private dateFormatService: DateFormatService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() { }
 
@@ -55,32 +60,69 @@ export class PdfSecurityCheckerComponent implements OnInit {
 
     try {
       const response = await this.pdfPropertiesService.checkProperties(this.domain, this.limit);
-      this.totalResults = response.totalResults; // 追加
-      this.pdfDocuments = response.documents.map((item: any) => {
-        const pdfProperties = JSON.parse(item.pdfProperties);
-        return {
-          ...item,
-          pdfProperties: {
-            ...pdfProperties,
-            document: {
-              ...pdfProperties.document,
-              info_dict: {
-                ...pdfProperties.document.info_dict,
-                CreationDate: this.dateFormatService.formatDateToJapanTime(pdfProperties.document.info_dict.CreationDate ?? ''),
-                ModDate: this.dateFormatService.formatDateToJapanTime(pdfProperties.document.info_dict.ModDate ?? '')
-              }
-            }
-          }
-        };
-      });
-      this.documentCount = this.pdfDocuments.length;
-      this.cdr.detectChanges(); // Detect changes before creating charts
+      this.totalResults = response.totalResults;
+      this.processDocuments(response.documents);
     } catch (error) {
-      this.errorMessage = 'An error occurred while checking the PDF properties.';
-      console.error('Error:', error);
+      this.handleError('An error occurred while checking the PDF properties.', error);
     } finally {
       this.loading = false;
     }
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedFiles = Array.from(input.files);
+    }
+  }
+
+  async uploadFiles() {
+    if (this.selectedFiles.length === 0) {
+      return;
+    }
+
+    this.loading = true;
+    this.errorMessage = '';
+    this.pdfDocuments = [];
+
+    try {
+      const formData = new FormData();
+      this.selectedFiles.forEach(file => formData.append('files', file));
+
+      const response = await this.pdfPropertiesService.uploadFiles(formData);
+      this.processDocuments(response);
+    } catch (error) {
+      this.handleError('An error occurred while uploading the files.', error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  private processDocuments(documents: any[]) {
+    this.pdfDocuments = documents.map((item: any) => {
+      const pdfProperties = JSON.parse(item.pdfProperties);
+      return {
+        ...item,
+        pdfProperties: {
+          ...pdfProperties,
+          document: {
+            ...pdfProperties.document,
+            info_dict: {
+              ...pdfProperties.document.info_dict,
+              CreationDate: this.dateFormatService.formatDateToJapanTime(pdfProperties.document.info_dict.CreationDate ?? ''),
+              ModDate: this.dateFormatService.formatDateToJapanTime(pdfProperties.document.info_dict.ModDate ?? '')
+            }
+          }
+        }
+      };
+    });
+    this.documentCount = this.pdfDocuments.length;
+    this.cdr.detectChanges(); // Detect changes before creating charts
+  }
+
+  private handleError(message: string, error: any) {
+    this.errorMessage = message;
+    console.error('Error:', error);
   }
 
   downloadCSV() {
