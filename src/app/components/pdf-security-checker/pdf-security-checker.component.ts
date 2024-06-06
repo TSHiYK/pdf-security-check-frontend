@@ -100,7 +100,10 @@ export class PdfSecurityCheckerComponent implements OnInit {
 
   private processDocuments(documents: any[]) {
     this.pdfDocuments = documents.map((item: any) => {
-      const pdfProperties = JSON.parse(item.pdfProperties);
+      const pdfProperties = typeof item.pdfProperties === 'string'
+        ? JSON.parse(item.pdfProperties)
+        : item.pdfProperties;
+
       return {
         ...item,
         pdfProperties: {
