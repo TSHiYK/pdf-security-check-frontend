@@ -104,6 +104,29 @@ export class PdfSecurityCheckerComponent implements OnInit {
         ? JSON.parse(item.pdfProperties)
         : item.pdfProperties;
 
+      if (!pdfProperties.security_info) {
+        pdfProperties.security_info = {
+          encryption: {
+            encrypt_attachments_only: false,
+            has_owner_password: false,
+            has_user_password: false,
+            encrypt_metadata: false,
+            bit_length: null,
+            algorithm: null,
+          },
+          permissions: {
+            assistive_technology: true,
+            form_filling: true,
+            copying: true,
+            page_extraction: true,
+            document_assembly: true,
+            commenting: true,
+            printing: 'high_quality',
+            editing: true,
+          }
+        };
+      }
+
       return {
         ...item,
         pdfProperties: {
@@ -130,13 +153,13 @@ export class PdfSecurityCheckerComponent implements OnInit {
 
   downloadCSV() {
     const data = this.pdfDocuments.map(doc => ({
-      URL: doc.pdfUrl,
-      Filename: doc.fileName,
+      'URL': doc.pdfUrl,
+      'File Name': doc.fileName,
       'File Size': doc.pdfProperties.document.file_size,
       'PDF Version': doc.pdfProperties.document.pdf_version,
       'Page Count': doc.pdfProperties.document.page_count,
-      Title: doc.pdfProperties.document.info_dict.Title ?? '',
-      Author: doc.pdfProperties.document.info_dict.Author ?? '',
+      'Title': doc.pdfProperties.document.info_dict.Title ?? '',
+      'Author': doc.pdfProperties.document.info_dict.Author ?? '',
       'Creation Date': doc.pdfProperties.document.info_dict.CreationDate ?? '',
       'Modification Date': doc.pdfProperties.document.info_dict.ModDate ?? '',
       'Application': doc.pdfProperties.document.info_dict.Creator ?? '',
@@ -157,10 +180,10 @@ export class PdfSecurityCheckerComponent implements OnInit {
       'PDF/X Compliance Level': doc.pdfProperties.document.pdfx_compliance_level ?? '',
       'Encryption Attachments Only': doc.pdfProperties.security_info?.encryption?.encrypt_attachments_only,
       'Has Owner Password': doc.pdfProperties.security_info?.encryption?.has_owner_password,
-      'Encrypt Metadata': doc.pdfProperties.security_info?.encryption?.encrypt_metadata,
       'Has User Password': doc.pdfProperties.security_info?.encryption?.has_user_password,
-      'Encryption Bit Length': doc.pdfProperties.security_info?.encryption?.bit_length,
-      'Encryption Algorithm': doc.pdfProperties.security_info?.encryption?.algorithm,
+      'Encrypt Metadata': doc.pdfProperties.security_info?.encryption?.encrypt_metadata,
+      'Encryption Bit Length': doc.pdfProperties.security_info?.encryption?.bit_length ?? '',
+      'Encryption Algorithm': doc.pdfProperties.security_info?.encryption?.algorithm ?? '',
       'Assistive Technology': doc.pdfProperties.security_info?.permissions?.assistive_technology,
       'Form Filling': doc.pdfProperties.security_info?.permissions?.form_filling,
       'Copying': doc.pdfProperties.security_info?.permissions?.copying,
@@ -180,7 +203,7 @@ export class PdfSecurityCheckerComponent implements OnInit {
     const options = {
       headers: [
         'URL',
-        'Filename',
+        'File Name',
         'File Size',
         'PDF Version',
         'Page Count',
@@ -206,8 +229,8 @@ export class PdfSecurityCheckerComponent implements OnInit {
         'PDF/X Compliance Level',
         'Encryption Attachments Only',
         'Has Owner Password',
-        'Encrypt Metadata',
         'Has User Password',
+        'Encrypt Metadata',
         'Encryption Bit Length',
         'Encryption Algorithm',
         'Assistive Technology',
@@ -228,6 +251,19 @@ export class PdfSecurityCheckerComponent implements OnInit {
       useBom: true, // BOMを使用してエンコードをUTF-8にする
     };
 
-    new ngxCsv(data, 'PDF_Documents_Report', options);
+    const currentTimestamp = this.getFormattedTimestamp();
+    new ngxCsv(data, `${currentTimestamp}_PDF_Documents_Report`, options);
+  }
+
+  private getFormattedTimestamp(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = ('0' + (now.getMonth() + 1)).slice(-2);
+    const day = ('0' + now.getDate()).slice(-2);
+    const hours = ('0' + now.getHours()).slice(-2);
+    const minutes = ('0' + now.getMinutes()).slice(-2);
+    const seconds = ('0' + now.getSeconds()).slice(-2);
+
+    return `${year}${month}${day}_${hours}${minutes}${seconds}`;
   }
 }

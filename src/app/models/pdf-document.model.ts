@@ -58,10 +58,10 @@ export interface SecurityInfo {
 export interface Encryption {
     encrypt_attachments_only: boolean;
     has_owner_password: boolean;
-    encrypt_metadata: boolean;
     has_user_password: boolean;
-    bit_length: number;
-    algorithm: string;
+    encrypt_metadata: boolean;
+    bit_length: number | null;
+    algorithm: string | null;
 }
 
 export interface Permissions {
