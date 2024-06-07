@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { io } from 'socket.io-client';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-server-log',
@@ -17,7 +18,7 @@ export class ServerLogComponent implements OnInit {
   }
 
   connectToServerLogs() {
-    const socket = io('http://localhost:3000');
+    const socket = io(environment.socketUrl);
     socket.on('log', (data: { level: string, message: string }) => {
       const timestamp = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
       this.logs.unshift({ timestamp, ...data });
