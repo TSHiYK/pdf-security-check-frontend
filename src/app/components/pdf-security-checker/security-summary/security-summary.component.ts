@@ -47,7 +47,7 @@ export class SecuritySummaryComponent implements OnChanges {
     const accessibilityCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.assistive_technology).length;
     const extractionCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.page_extraction).length;
     const assemblyCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.document_assembly).length;
-    const templateCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.printing === 'high_resolution').length;
+    // const templateCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.permissions?.templateCount).length;
 
     this.createBarChart(
       'documentRestrictionsChart',
@@ -60,7 +60,7 @@ export class SecuritySummaryComponent implements OnChanges {
         'フォームフィールドの入力許可',
         'アクセシビリティのため内容の抽出許可',
         '文書アセンブリ許可',
-        'テンプレートページの作成許可'
+        // 'テンプレートページの作成許可'
       ],
       [
         printingCount,
@@ -71,7 +71,7 @@ export class SecuritySummaryComponent implements OnChanges {
         formFillingCount,
         accessibilityCount,
         assemblyCount,
-        templateCount
+        // templateCount
       ],
       documentCount
     );
