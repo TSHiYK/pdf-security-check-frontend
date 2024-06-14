@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { environment } from '../../environments/environment';
-import qs from 'qs';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,9 +13,9 @@ export class PdfPropertiesService {
   }
 
   async uploadFiles(formData: FormData): Promise<any> {
-    const response = await axios.post(`${this.apiUrl}/upload-pdf-properties`, qs.stringify(formData), {
+    const response = await axios.post(`${this.apiUrl}/upload-pdf-properties`, formData, {
       headers: {
-        'Content-Type': 'multipart/x-www-form-urlencoded'
+        'Content-Type': 'multipart/form-data'
       }
     });
     return response.data;
