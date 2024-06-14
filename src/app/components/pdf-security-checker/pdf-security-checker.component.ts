@@ -32,12 +32,13 @@ import { ngxCsv } from 'ngx-csv/ngx-csv';
     SecuritySummaryComponent,
     AccessibilitySummaryComponent,
     PdfStandardSummaryComponent
-  ],
-  providers: [PdfPropertiesService]
+  ]
 })
 export class PdfSecurityCheckerComponent implements OnInit {
   domain = '';
   limit = 1;
+  startDate = '';
+  endDate = '';
   pdfDocuments: PdfDocument[] = [];
   loading = false;
   errorMessage = '';
@@ -59,7 +60,7 @@ export class PdfSecurityCheckerComponent implements OnInit {
     this.pdfDocuments = [];
 
     try {
-      const response = await this.pdfPropertiesService.checkProperties(this.domain, this.limit);
+      const response = await this.pdfPropertiesService.checkProperties(this.domain, this.limit, this.startDate, this.endDate);
       this.totalResults = response.totalResults;
       this.processDocuments(response.documents);
     } catch (error) {
@@ -87,7 +88,7 @@ export class PdfSecurityCheckerComponent implements OnInit {
 
     try {
       const formData = new FormData();
-      this.selectedFiles.forEach(file => formData.append('files', file));
+      this.selectedFiles.forEach(file => { formData.append('files', file, encodeURIComponent(file.name)) });
 
       const response = await this.pdfPropertiesService.uploadFiles(formData);
       this.processDocuments(response);
@@ -153,8 +154,8 @@ export class PdfSecurityCheckerComponent implements OnInit {
 
   downloadCSV() {
     const data = this.pdfDocuments.map(doc => ({
-      'URL': doc.pdfUrl,
-      'File Name': doc.fileName,
+      'URL': doc.pdfUrl ?? '',
+      'File Name': decodeURIComponent(doc.fileName),
       'File Size': doc.pdfProperties.document.file_size,
       'PDF Version': doc.pdfProperties.document.pdf_version,
       'Page Count': doc.pdfProperties.document.page_count,

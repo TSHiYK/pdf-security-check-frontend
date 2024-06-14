@@ -6,28 +6,23 @@
   </ul>
 </div>
 
-<ul>
+<ul class="form-type">
   <li>
-    <p>公開されているファイルを分析</p>
+    <h3>Web上に公開されているファイルを分析</h3>
     <form (ngSubmit)="checkProperties()" class="form">
-      <div class="form-row">
-        <mat-form-field appearance="fill" class="form-field">
-          <mat-label>ドメイン</mat-label>
-          <input matInput [(ngModel)]="domain" name="domain" required placeholder="adobe.com">
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="form-field">
-          <mat-label>ファイル数</mat-label>
-          <input matInput type="number" [(ngModel)]="limit" name="limit" min="1" max="10" required>
-        </mat-form-field>
-        <button mat-raised-button color="primary" type="submit" [disabled]="loading || !domain" class="form-button">検索して分析</button>
-        
-      </div>
+      <ul class="search">
+        <li><label for="">ドメイン</label><input  [(ngModel)]="domain" name="domain" required placeholder="ex. adobe.com"></li>
+        <li><label for="">ファイル数</label><input  type="number" [(ngModel)]="limit" name="limit" min="1" max="10" required></li>
+        <li><label for="startDate">開始日（任意）</label><input type="date" name="startDate" id="startDate" [(ngModel)]="startDate" placeholder="Start Date"></li>
+        <li><label for="endDate">終了日（任意）</label><input type="date" name="endDate" id="endDate" [(ngModel)]="endDate" placeholder="End Date"></li>
+        </ul>
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading || !domain" class="form-button">検索して分析</button>
     </form>
   </li>
   <li>
-    <p>ローカルファイルを分析</p>
+    <h3>ローカルファイルを分析</h3>
     <form (ngSubmit)="uploadFiles()" class="form">
-      <div class="form-row">
+      <div class="t-center">
         <input type="file" (change)="onFileSelected($event)" multiple>
         <button mat-raised-button color="primary" type="submit" [disabled]="loading || !selectedFiles.length" class="form-button">アップロードして分析</button>
       </div>
