@@ -20,9 +20,9 @@ export class ServerLogComponent implements OnInit {
   connectToServerLogs() {
     const socket = io(environment.socketUrl);
     socket.on('log', (data: { level: string, message: string }) => {
+      data.message = decodeURIComponent(data.message);
       const timestamp = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
       this.logs.unshift({ timestamp, ...data });
-      console.log(`[${data.level}] ${data.message}`);
     });
   }
 }
