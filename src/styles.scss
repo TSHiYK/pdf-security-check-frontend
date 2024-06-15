@@ -16,13 +16,33 @@ body {
 h1 {
     font-size: 2rem;
     color: #333;
-    margin: 80px 0 40px;
+    margin: 6rem 0 4rem;
     border-left: 8px solid #333;
     padding-left: 16px;
     text-align: left!important;
 }
 
 h2 {
-    margin: 0.5em 0 0.2em;
+    margin: 4rem 0 2rem;
     text-align: center;
+}
+
+.mt0 {
+    margin-top: 0;
+}
+
+p, dd {
+    line-height: 1.6;
+}
+
+.def-list {
+    dd, dd {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+    }
+    dt {
+        font-weight: bold;
+        margin: 1.33em 0 5px;
+    }
 }

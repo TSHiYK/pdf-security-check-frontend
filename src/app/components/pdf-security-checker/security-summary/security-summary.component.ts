@@ -13,6 +13,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 export class SecuritySummaryComponent implements OnChanges {
   @Input() pdfDocuments: any[] = [];
   documentCount = 0;
+  versionCounts: { [version: string]: number } = {};
+  versionAlgorithmCounts: { [version: string]: { [algorithm: string]: { [bitLength: number]: number } } } = {};
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -21,6 +23,8 @@ export class SecuritySummaryComponent implements OnChanges {
       this.documentCount = this.pdfDocuments.length;
       this.cdr.detectChanges();
       this.createCharts();
+      this.calculateVersionCounts();
+      this.calculateVersionAlgorithmCounts();
     }
   }
 
@@ -77,16 +81,14 @@ export class SecuritySummaryComponent implements OnChanges {
     );
 
     // Additional Security Items
-    const encryption128Count = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.encryption?.bit_length === 128).length;
-    const encryption256Count = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.encryption?.bit_length === 256).length;
     const ownerPasswordCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.encryption?.has_owner_password).length;
     const userPasswordCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.encryption?.has_user_password).length;
     const metadataEncryptionCount = this.pdfDocuments.filter(doc => doc.pdfProperties.security_info?.encryption?.encrypt_metadata).length;
 
     this.createBarChart(
       'additionalSecurityChart',
-      ['128ビット暗号化', '256ビット暗号化', 'オーナーパスワード', 'ユーザーパスワード', 'メタデータの暗号化'],
-      [encryption128Count, encryption256Count, ownerPasswordCount, userPasswordCount, metadataEncryptionCount],
+      ['ユーザーパスワード', 'オーナーパスワード', 'メタデータの暗号化'],
+      [userPasswordCount, ownerPasswordCount, metadataEncryptionCount],
       documentCount
     );
   }
@@ -217,5 +219,39 @@ export class SecuritySummaryComponent implements OnChanges {
         },
       });
     }, 0);
+  }
+
+  calculateVersionCounts() {
+    this.versionCounts = this.pdfDocuments.reduce((acc, doc) => {
+      const version = doc.pdfProperties.document.pdf_version;
+      acc[version] = (acc[version] || 0) + 1;
+      return acc;
+    }, {} as { [version: string]: number });
+  }
+
+  calculateVersionAlgorithmCounts() {
+    this.versionAlgorithmCounts = this.pdfDocuments.reduce((acc, doc) => {
+      const version = doc.pdfProperties.document.pdf_version;
+      const isEncrypted = doc.pdfProperties.document.is_encrypted;
+      const algorithm = isEncrypted ? doc.pdfProperties.security_info?.encryption?.algorithm || '暗号化なし' : '暗号化なし';
+      const bitLength = isEncrypted ? (doc.pdfProperties.security_info?.encryption?.bit_length?.toString() || '') : '';
+
+      if (!acc[version]) {
+        acc[version] = {};
+      }
+      if (!acc[version][algorithm]) {
+        acc[version][algorithm] = {};
+      }
+      acc[version][algorithm][bitLength] = (acc[version][algorithm][bitLength] || 0) + 1;
+      return acc;
+    }, {} as { [version: string]: { [algorithm: string]: { [bitLength: string]: number } } });
+  }
+
+  calculateRowspan(version: { [algorithm: string]: { [bitLength: string]: number } }): number {
+    let count = 0;
+    for (let algo of Object.values(version)) {
+      count += Object.keys(algo).length;
+    }
+    return count;
   }
 }
