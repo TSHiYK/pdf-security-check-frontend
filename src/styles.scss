@@ -46,3 +46,42 @@ p, dd {
         margin: 1.33em 0 5px;
     }
 }
+
+@page {
+    margin: 0mm 5mm;
+	size: A4 portrait;
+}
+
+@media print {
+    
+    body {
+        width: 1280px;
+        margin: 0 auto;
+        zoom: 0.8;
+    }
+
+    h1 {
+        margin-top: 0;
+    }
+
+    p, table, dt, dd, section {
+        page-break-inside: avoid;
+    }
+
+    .mat-toolbar,
+    .tool-overview,
+    .server-log-container,
+    .form-type,
+    .mdc-button  {
+        display: none!important;
+    }
+
+    .print-new-page {
+        padding-top: 20mm;
+        display: block;
+        &::before {
+            content: "";
+            display: inline;
+        }
+    }
+}

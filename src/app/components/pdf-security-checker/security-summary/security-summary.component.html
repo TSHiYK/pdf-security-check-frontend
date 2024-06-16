@@ -1,67 +1,67 @@
 <section>
-<h1>Security</h1>
-<div *ngIf="documentCount > 0" class="charts-container">
-  <div class="chart" *ngIf="documentCount > 0">
-    <h2 class="mt0">Encryption</h2>
-    <p>暗号化されたPDFは、コンテンツを不正アクセスから保護します。</p>
-    <canvas id="encryptedChart"></canvas>
+  <h1>Security</h1>
+  <div *ngIf="documentCount > 0" class="charts-container">
+    <div class="chart" *ngIf="documentCount > 0">
+      <h2 class="mt0">Encryption</h2>
+      <p>暗号化されたPDFは、コンテンツを不正アクセスから保護します。</p>
+      <canvas id="encryptedChart"></canvas>
+    </div>
+    <div class="chart" *ngIf="documentCount > 0">
+      <h2 class="mt0">Signed</h2>
+      <p>署名されたPDFは、文書の信頼性と完全性を保証します。</p>
+      <canvas id="signedChart"></canvas>
+    </div>
+    <div class="chart" *ngIf="documentCount > 0">
+      <h2 class="mt0">Certified</h2>
+      <p>認証済みPDFは、文書の出所と真正性を確認します。</p>
+      <canvas id="certifiedChart"></canvas>
+    </div>
   </div>
-  <div class="chart" *ngIf="documentCount > 0">
-    <h2 class="mt0">Signed</h2>
-    <p>署名されたPDFは、文書の信頼性と完全性を保証します。</p>
-    <canvas id="signedChart"></canvas>
-  </div>
-  <div class="chart" *ngIf="documentCount > 0">
-    <h2 class="mt0">Certified</h2>
-    <p>認証済みPDFは、文書の出所と真正性を確認します。</p>
-    <canvas id="certifiedChart"></canvas>
-  </div>
-</div>
 
-<h2>セキュリティオプション</h2>
-<div *ngIf="documentCount > 0">
-  <canvas id="additionalSecurityChart"></canvas>
-</div>
-<dl class="def-list">
-  <dt>ユーザーパスワード</dt><dd>ユーザーパスワードを設定することで、特定のユーザーのみがPDFファイルを開いて閲覧できるように制限することができます。</dd>
-  <dt>オーナーパスワード</dt><dd>オーナーパスワードはPDFの編集権限を管理するためのパスワードで、ファイルの印刷、編集、コピーなどの操作を制限し、不正な変更を防ぎます。</dd>
-  <dt>メタデータの暗号化</dt><dd>
-メタデータの暗号化とは、PDFファイルのメタデータ（タイトル、作成者、キーワードなど）を暗号化することで、機密情報やプライバシー情報が第三者に漏れるリスクを低減します。検索エンジンによってインデックスされることがないため、機密情報の流出を防止し、文書全体のセキュリティを強化します。</dd>
-</dl>
+  <h2>セキュリティオプション</h2>
+  <div *ngIf="documentCount > 0">
+    <canvas id="additionalSecurityChart"></canvas>
+  </div>
+  <dl class="def-list">
+    <dt>ユーザーパスワード</dt><dd>ユーザーパスワードを設定することで、特定のユーザーのみがPDFファイルを開いて閲覧できるように制限することができます。</dd>
+    <dt>オーナーパスワード</dt><dd>オーナーパスワードはPDFの編集権限を管理するためのパスワードで、ファイルの印刷、編集、コピーなどの操作を制限し、不正な変更を防ぎます。</dd>
+    <dt>メタデータの暗号化</dt><dd>
+  メタデータの暗号化とは、PDFファイルのメタデータ（タイトル、作成者、キーワードなど）を暗号化することで、機密情報やプライバシー情報が第三者に漏れるリスクを低減します。検索エンジンによってインデックスされることがないため、機密情報の流出を防止し、文書全体のセキュリティを強化します。</dd>
+  </dl>
 
-<div *ngIf="documentCount > 0">
-  <h2>PDFバージョンと暗号化アルゴリズムおよびキー長の分布</h2>
-  <table class="pdf-table">
-    <thead>
-      <tr>
-        <th>バージョン</th>
-        <th>アルゴリズム</th>
-        <th>キー長</th>
-        <th>ファイル数</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let version of versionAlgorithmCounts | keyvalue">
-        <ng-container *ngFor="let algo of version.value | keyvalue; let i = index">
-          <ng-container *ngFor="let bitLength of algo.value | keyvalue; let j = index">
-            <tr>
-              <ng-container *ngIf="i === 0 && j === 0">
-                <td [attr.rowspan]="calculateRowspan(version.value)">{{ version.key }}</td>
-              </ng-container>
-              <td>{{ algo.key }}</td>
-              <td>{{ bitLength.key }}</td>
-              <td>{{ bitLength.value }}</td>
-            </tr>
+  <div *ngIf="documentCount > 0">
+    <h2>PDFバージョンと暗号化アルゴリズムおよびキー長の分布</h2>
+    <table class="pdf-table">
+      <thead>
+        <tr>
+          <th>バージョン</th>
+          <th>アルゴリズム</th>
+          <th>キー長</th>
+          <th>ファイル数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let version of versionAlgorithmCounts | keyvalue">
+          <ng-container *ngFor="let algo of version.value | keyvalue; let i = index">
+            <ng-container *ngFor="let bitLength of algo.value | keyvalue; let j = index">
+              <tr>
+                <ng-container *ngIf="i === 0 && j === 0">
+                  <td [attr.rowspan]="calculateRowspan(version.value)">{{ version.key }}</td>
+                </ng-container>
+                <td>{{ algo.key }}</td>
+                <td>{{ bitLength.key }}</td>
+                <td>{{ bitLength.value }}</td>
+              </tr>
+            </ng-container>
           </ng-container>
         </ng-container>
-      </ng-container>
-    </tbody>
-  </table>
-  <p>現代の標準に基づき、セキュリティの観点からAES（Advanced Encryption Standard）をお勧めします。AESは、高いセキュリティを提供し、多くの信頼性のあるセキュリティプロトコルで使用されています。一方、RC4（Rivest Cipher 4）は既知の脆弱性があり、推奨されません。</p>
-</div>
+      </tbody>
+    </table>
+    <p>現代の標準に基づき、セキュリティの観点からAES（Advanced Encryption Standard）をお勧めします。AESは、高いセキュリティを提供し、多くの信頼性のあるセキュリティプロトコルで使用されています。一方、RC4（Rivest Cipher 4）は既知の脆弱性があり、推奨されません。</p>
+  </div>
 
-<h2>制限</h2>
-<div *ngIf="documentCount > 0">
-  <canvas id="documentRestrictionsChart"></canvas>
-</div>
+  <h2>制限</h2>
+  <div *ngIf="documentCount > 0">
+    <canvas id="documentRestrictionsChart"></canvas>
+  </div>
 </section>
